@@ -60,7 +60,11 @@ const HomePage = ({ onLogout }: { onLogout: () => void }) => {
 
                 <div className="hidden md:flex items-center gap-16 absolute left-1/2 -translate-x-1/2">
                     {['Home', 'Stores', 'Admin', 'About'].map((item) => (
-                        <span key={item} className="relative text-sm font-bold text-slate-600 hover:text-black cursor-pointer transition-colors group">
+                        <span
+                            key={item}
+                            onClick={() => item === 'Home' && setIsStarted(false)}
+                            className="relative text-sm font-bold text-slate-600 hover:text-black cursor-pointer transition-colors group"
+                        >
                             {item}
                             <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
                         </span>
@@ -139,6 +143,14 @@ const HomePage = ({ onLogout }: { onLogout: () => void }) => {
                     transition={{ duration: 0.8 }}
                     className="fixed inset-0 z-0 pt-24 pb-6 px-6 bg-slate-50/50 flex flex-col overflow-hidden"
                 >
+                    {/* H&M Background Gradient */}
+                    <motion.div
+                        className="absolute inset-0 z-[-1] bg-gradient-to-br from-red-100 via-white to-white pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: activeStore === 'hm' ? 1 : 0 }}
+                        transition={{ duration: 1 }}
+                    />
+
                     <main className="w-full flex-1 relative min-h-0">
                         <div className="w-full h-full mx-auto">
                             <div className="flex items-center justify-between gap-4 h-full">
