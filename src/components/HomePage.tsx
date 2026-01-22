@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import StoreCard from './StoreCard.tsx';
 import HMStore3D from './HMStore3D.tsx';
+import LuLuStore3D from './LuLuStore3D.tsx';
 import hmImage from '../assets/hm_store.png';
 import luluImage from '../assets/lulu_store.png';
 import logo from '../assets/logo.png';
@@ -32,12 +33,13 @@ const HomePage = ({ onLogout }: { onLogout: () => void }) => {
             description: "Discover the latest in fashion and home at H&M. From high-end luxury collaborations to everyday essentials, explore our curated collections in a fully immersive virtual boutique.",
             visitors: "1.2k+",
             items: "450+",
-            rating: "4.9/5"
+            rating: "4.9/5",
+            backgroundColor: "#F8FAFC" // Default Slate-50
         },
         lulu: {
             title: "Lulu Hyper",
             imageUrl: luluImage,
-            Render3D: null,
+            Render3D: LuLuStore3D,
             logoUrl: luluLogo,
             tagline: "Your Daily Global Marketplace",
             description: "Experience the ultimate convenience in virtual grocery shopping. Browse fresh produce, international delicacies, and household essentials in our hyper-realistic 3D marketplace.",
@@ -143,11 +145,19 @@ const HomePage = ({ onLogout }: { onLogout: () => void }) => {
                     transition={{ duration: 0.8 }}
                     className="fixed inset-0 z-0 pt-24 pb-6 px-6 bg-slate-50/50 flex flex-col overflow-hidden"
                 >
-                    {/* H&M Background Gradient */}
+                    {/* H&M Background (Red Tint) */}
                     <motion.div
-                        className="absolute inset-0 z-[-1] bg-gradient-to-br from-red-100 via-white to-white pointer-events-none"
+                        className="absolute inset-0 z-[-1] bg-[#FEE2E2] pointer-events-none"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: activeStore === 'hm' ? 1 : 0 }}
+                        transition={{ duration: 1 }}
+                    />
+
+                    {/* Lulu Background (Cream) */}
+                    <motion.div
+                        className="absolute inset-0 z-[-1] bg-[#FEFBF0] pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: activeStore === 'lulu' ? 1 : 0 }}
                         transition={{ duration: 1 }}
                     />
 

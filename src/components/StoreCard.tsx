@@ -13,6 +13,7 @@ interface StoreCardProps {
     items: string;
     rating: string;
     Render3D?: React.ComponentType | null;
+    backgroundColor?: string;
 }
 
 const StoreCard: React.FC<StoreCardProps> = ({
@@ -29,7 +30,9 @@ const StoreCard: React.FC<StoreCardProps> = ({
     return (
         <div className="w-full h-full mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col lg:flex-row">
             {/* Visual Section (Left) */}
-            <div className="lg:flex-[1.3] bg-slate-50 relative flex items-center justify-center p-8 overflow-hidden group">
+            <div
+                className="lg:flex-[1.3] bg-slate-50 relative flex items-center justify-center p-8 overflow-hidden group"
+            >
                 <div className="relative w-full h-full flex items-center justify-center min-h-[300px] lg:min-h-full">
                     {Render3D ? (
                         <div className="w-full h-full absolute inset-0">
@@ -49,7 +52,7 @@ const StoreCard: React.FC<StoreCardProps> = ({
             </div>
 
             {/* Content Section (Right) */}
-            <div className="flex-1 p-8 lg:p-12 flex flex-col justify-center bg-white">
+            <div className="flex-1 p-8 lg:p-12 flex flex-col bg-white">
                 <div className="flex items-center gap-4 mb-6">
                     <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">
                         Flagship Store
@@ -57,7 +60,7 @@ const StoreCard: React.FC<StoreCardProps> = ({
                     <div className="h-px flex-1 bg-slate-100" />
                 </div>
 
-                <div className="w-64 h-64 mb-8 p-4 bg-white rounded-2xl flex items-center justify-center">
+                <div className="w-64 h-64 mb-2 p-4 bg-white rounded-2xl flex items-center justify-center">
                     <img src={logoUrl} alt={`${title} logo`} className="w-full h-full object-contain" />
                 </div>
 

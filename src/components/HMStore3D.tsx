@@ -171,7 +171,9 @@ const HMStore3D = () => {
 
                 <Float speed={1.2} rotationIntensity={0.05} floatIntensity={0.2}>
                     <group rotation={[0, Math.PI / 6, 0]}>
-                        <Building />
+                        <React.Suspense fallback={null}>
+                            <Building />
+                        </React.Suspense>
                     </group>
                 </Float>
 
