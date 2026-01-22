@@ -35,7 +35,8 @@ const StoreCard: React.FC<StoreCardProps> = ({
             >
                 <div className="relative w-full h-full flex items-center justify-center min-h-[300px] lg:min-h-full">
                     {Render3D ? (
-                        <div className="w-full h-full absolute inset-0">
+                        <div className="w-full h-full absolute inset-0 relative">
+                            {/* Suspense is handled inside the 3D components now with visual loaders */}
                             <Render3D />
                         </div>
                     ) : (

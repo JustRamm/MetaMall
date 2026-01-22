@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import StoreCard from './StoreCard.tsx';
 import HMStore3D from './HMStore3D.tsx';
 import LuLuStore3D from './LuLuStore3D.tsx';
@@ -163,22 +163,66 @@ const HomePage = ({ onLogout }: { onLogout: () => void }) => {
 
                     <main className="w-full flex-1 relative min-h-0">
                         <div className="w-full h-full mx-auto">
-                            <div className="flex items-center justify-between gap-4 h-full">
+                            <div className="flex items-center justify-between gap-4 h-full relative overflow-hidden">
+
+                                {/* Previous Button */}
                                 <button
-                                    onClick={toggleStore}
-                                    className={`p-2 transition-colors duration-300 hover:scale-110 ${activeStore === 'hm' ? 'invisible' : 'text-slate-400 hover:text-slate-900'}`}
+                                    onClick={() => {
+                                        if (activeStore === 'lulu') toggleStore();
+                                    }}
+                                    className={`p-2 transition-colors duration-300 hover:scale-110 z-20 ${activeStore === 'hm' ? 'invisible pointer-events-none' : 'text-slate-400 hover:text-slate-900'}`}
                                     aria-label="Previous Store"
                                 >
                                     <ChevronRight className="w-10 h-10 rotate-180" strokeWidth={1.5} />
                                 </button>
 
-                                <div className="flex-1">
-                                    <StoreCard {...storesData[activeStore]} />
+                                {/* Sliding Card Container */}
+                                <div className="flex-1 overflow-hidden h-full relative">
+                                    <AnimatePresence mode="popLayout" custom={activeStore === 'hm' ? -1 : 1}>
+                                        <motion.div
+                                            key={activeStore}
+                                            custom={activeStore === 'hm' ? -1 : 1}
+                                            variants={{
+                                                enter: (direction: number) => ({
+                                                    x: direction > 0 ? '100%' : '-100%',
+                                                    opacity: 0,
+                                                    scale: 0.9
+                                                }),
+                                                center: {
+                                                    x: 0,
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                    transition: {
+                                                        x: { type: "spring", stiffness: 300, damping: 30 },
+                                                        opacity: { duration: 0.2 }
+                                                    }
+                                                },
+                                                exit: (direction: number) => ({
+                                                    x: direction < 0 ? '100%' : '-100%',
+                                                    opacity: 0,
+                                                    scale: 0.9,
+                                                    transition: {
+                                                        x: { type: "spring", stiffness: 300, damping: 30 },
+                                                        opacity: { duration: 0.2 }
+                                                    }
+                                                })
+                                            }}
+                                            initial="enter"
+                                            animate="center"
+                                            exit="exit"
+                                            className="w-full h-full absolute inset-0"
+                                        >
+                                            <StoreCard {...storesData[activeStore]} />
+                                        </motion.div>
+                                    </AnimatePresence>
                                 </div>
 
+                                {/* Next Button */}
                                 <button
-                                    onClick={toggleStore}
-                                    className={`p-2 transition-colors duration-300 hover:scale-110 ${activeStore === 'lulu' ? 'invisible' : 'text-slate-400 hover:text-slate-900'}`}
+                                    onClick={() => {
+                                        if (activeStore === 'hm') toggleStore();
+                                    }}
+                                    className={`p-2 transition-colors duration-300 hover:scale-110 z-20 ${activeStore === 'lulu' ? 'invisible pointer-events-none' : 'text-slate-400 hover:text-slate-900'}`}
                                     aria-label="Next Store"
                                 >
                                     <ChevronRight className="w-10 h-10" strokeWidth={1.5} />
