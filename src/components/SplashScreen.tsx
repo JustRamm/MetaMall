@@ -70,9 +70,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     transition={{ delay: 0.5, duration: 0.8 }}
                     className="text-center space-y-2"
                 >
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900">
-                        MetaMall
-                    </h1>
                     <p className="text-lg md:text-xl font-medium text-slate-500 tracking-wide uppercase">
                         The Future of Retail
                     </p>

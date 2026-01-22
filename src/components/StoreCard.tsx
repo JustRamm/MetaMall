@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Users, Box, Star } from 'lucide-react';
 import { Button } from './ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface StoreCardProps {
     title: string;
@@ -27,6 +28,16 @@ const StoreCard: React.FC<StoreCardProps> = ({
     rating,
     Render3D
 }) => {
+    const navigate = useNavigate();
+
+    const handleEnter = () => {
+        if (title.toLowerCase().includes('h&m')) {
+            navigate('/hm-simulator');
+        } else {
+            // For other stores, maybe a generic simulator or just an alert
+            console.log(`Entering ${title}...`);
+        }
+    };
     return (
         <div className="w-full h-full mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col lg:flex-row">
             {/* Visual Section (Left) */}
@@ -96,6 +107,7 @@ const StoreCard: React.FC<StoreCardProps> = ({
                 </div>
 
                 <Button
+                    onClick={handleEnter}
                     className="w-full sm:w-auto h-14 bg-black text-white hover:bg-zinc-800 rounded-xl text-base font-bold shadow-xl flex items-center justify-between px-8 group"
                 >
                     <span>ENTER {title.toUpperCase()} STORE</span>

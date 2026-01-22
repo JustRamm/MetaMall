@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import SplashScreen from './components/SplashScreen.tsx';
 import { AuthPage } from './components/ui/auth-page';
 import HomePage from './components/HomePage.tsx';
+import HMSimulator from './components/HMSimulator.tsx';
 import './App.css';
 
 function App() {
@@ -35,6 +36,12 @@ function App() {
             path="/home"
             element={
               isAuthenticated ? <HomePage onLogout={() => setIsAuthenticated(false)} /> : <Navigate to="/auth" />
+            }
+          />
+          <Route
+            path="/hm-simulator"
+            element={
+              isAuthenticated ? <HMSimulator /> : <Navigate to="/auth" />
             }
           />
           <Route
