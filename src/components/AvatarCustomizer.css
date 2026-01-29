@@ -1,0 +1,314 @@
+/* Avatar Customize Button - Bottom Left Corner */
+.avatar-customize-button {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.avatar-customize-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.avatar-customize-button:active {
+    transform: translateY(0);
+}
+
+.customize-label {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Customization Overlay */
+.avatar-customizer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Customization Panel */
+.avatar-customizer-panel {
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Header */
+.customizer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.customizer-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.close-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Content */
+.customizer-content {
+    padding: 28px;
+    overflow-y: auto;
+    max-height: calc(85vh - 180px);
+}
+
+.customizer-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.customizer-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.customizer-content::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 4px;
+}
+
+.customizer-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.7);
+}
+
+/* User Info */
+.user-info {
+    margin-bottom: 24px;
+}
+
+.username-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.username-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.username-value {
+    font-size: 18px;
+    color: #667eea;
+    font-weight: 700;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Avatar Grid */
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* Avatar Option */
+.avatar-option {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.avatar-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(102, 126, 234, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.avatar-option.selected {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: #667eea;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+}
+
+.selected-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.avatar-emoji {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.avatar-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 12px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Avatar Preview */
+.avatar-preview {
+    margin-top: 12px;
+}
+
+.color-swatch-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+/* Footer */
+.customizer-footer {
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hint-text {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .avatar-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+
+    .avatar-customize-button {
+        bottom: 16px;
+        left: 16px;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .customizer-header h2 {
+        font-size: 20px;
+    }
+
+    .avatar-emoji {
+        font-size: 36px;
+    }
+
+    .avatar-name {
+        font-size: 14px;
+    }
+}

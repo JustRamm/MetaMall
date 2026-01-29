@@ -13,6 +13,16 @@ import { ArrowLeft, Move, MousePointer } from 'lucide-react';
 import * as THREE from 'three';
 import { EffectComposer, Bloom, SSAO } from '@react-three/postprocessing';
 import styles from './HMSimulator.module.css';
+import { useMultiplayer } from '../hooks/useMultiplayer';
+import { useProducts } from '../hooks/useProducts';
+import { useCart } from '../hooks/useCart';
+import AvatarCustomizer from './AvatarCustomizer';
+import MultiplayerPlayers from './MultiplayerPlayers';
+import MultiplayerPlayer from './MultiplayerPlayer';
+import Product3D from './Product3D';
+import ProductDetailsModal from './ProductDetailsModal';
+import CartPanel from './CartPanel';
+import { Product } from '../lib/supabaseClient';
 
 // --- Types & Constants ---
 enum Controls {
@@ -1369,8 +1379,43 @@ export const RetailStoreLevel = () => {
     );
 };
 
+// Position tracker component to update player position for product proximity
+const PositionTracker: React.FC<{ positionRef: React.MutableRefObject<THREE.Vector3> }> = ({ positionRef }) => {
+    const { camera } = useThree();
+
+    useFrame(() => {
+        positionRef.current.copy(camera.position);
+    });
+
+    return null;
+};
+
 export default function HMSimulator() {
     const navigate = useNavigate();
+
+    // User session state - In production, get from auth context
+    const [userId] = useState(() => `user_${Math.random().toString(36).substr(2, 9)}`);
+    const [username] = useState(() => `Player_${Math.floor(Math.random() * 1000)}`);
+    const [avatarType, setAvatarType] = useState('default');
+
+    // Initialize multiplayer
+    const { otherPlayers, updatePosition, updateAvatarType } = useMultiplayer({
+        userId,
+        username,
+        initialPosition: { x: 0, y: 35 },
+        avatarType,
+    });
+
+    // Products and Cart
+    const { products, loading: productsLoading } = useProducts();
+    const { cartItems, totalItems, totalPrice, addToCart, updateQuantity, removeFromCart, clearCart } = useCart(userId);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const playerPositionRef = useRef(new THREE.Vector3(0, 1.7, 35));
+
+    // Debug: Log products
+    useEffect(() => {
+        console.log('Products loaded:', products.length, products);
+    }, [products]);
 
     const map = useMemo(() => [
         { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
@@ -1380,13 +1425,45 @@ export default function HMSimulator() {
         { name: Controls.interact, keys: ['KeyZ'] },
     ], []);
 
+    const handleAvatarChange = async (newAvatarType: string) => {
+        setAvatarType(newAvatarType);
+        await updateAvatarType(newAvatarType);
+    };
+
+    const handlePositionUpdate = (x: number, z: number, direction: string, isMoving: boolean) => {
+        updatePosition(x, z, direction, isMoving);
+    };
+
     return (
         <KeyboardControls map={map}>
             <div className={styles.simulatorContainer}>
                 <Canvas shadows dpr={[1, 2]}>
                     <PerspectiveCamera makeDefault position={[0, 1.7, 35]} fov={60} />
                     <PointerLockControls />
-                    <Player />
+
+                    {/* Multiplayer Player with position tracking */}
+                    <MultiplayerPlayer
+                        username={username}
+                        avatarType={avatarType}
+                        onPositionUpdate={handlePositionUpdate}
+                    />
+
+                    {/* Position tracker - updates player position for products */}
+                    <PositionTracker positionRef={playerPositionRef} />
+
+                    {/* Render other players */}
+                    <MultiplayerPlayers players={otherPlayers} />
+
+                    {/* Render Products */}
+                    {!productsLoading && products.map((product) => (
+                        <Product3D
+                            key={product.id}
+                            product={product}
+                            playerPosition={playerPositionRef.current}
+                            onSelect={setSelectedProduct}
+                            isSelected={selectedProduct?.id === product.id}
+                        />
+                    ))}
 
                     <React.Suspense fallback={null}>
                         <RetailStoreLevel />
@@ -1402,6 +1479,12 @@ export default function HMSimulator() {
                 <div className={styles.uiOverlay}>
                     <h1>H&M Flagship Store</h1>
                     <p>Press Z near fitting rooms to open doors</p>
+                    <div style={{ marginTop: '10px', fontSize: '14px', color: '#4CAF50' }}>
+                        👥 {otherPlayers.length} other shopper{otherPlayers.length !== 1 ? 's' : ''} online
+                    </div>
+                    <div style={{ marginTop: '5px', fontSize: '14px', color: '#FFD700' }}>
+                        🛍️ {products.length} products loaded
+                    </div>
                 </div>
 
                 <div className={styles.controlsHint}>
@@ -1417,6 +1500,30 @@ export default function HMSimulator() {
                         </div>
                     </div>
                 </div>
+
+                {/* Avatar Customization UI */}
+                <AvatarCustomizer
+                    currentAvatarType={avatarType}
+                    onAvatarChange={handleAvatarChange}
+                    username={username}
+                />
+
+                {/* Shopping Cart */}
+                <CartPanel
+                    cartItems={cartItems}
+                    totalItems={totalItems}
+                    totalPrice={totalPrice}
+                    onUpdateQuantity={updateQuantity}
+                    onRemoveItem={removeFromCart}
+                    onClearCart={clearCart}
+                />
+
+                {/* Product Details Modal */}
+                <ProductDetailsModal
+                    product={selectedProduct}
+                    onClose={() => setSelectedProduct(null)}
+                    onAddToCart={addToCart}
+                />
 
                 <button
                     onClick={() => navigate('/home')}
